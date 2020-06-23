@@ -18,7 +18,7 @@ class ThemeProvider extends ChangeNotifier {
     await loadSavedData();
   }
 
-  Color desaturateColor(Color value) {
+  Color _desaturateColor(Color value) {
     HSLColor color = HSLColor.fromColor(value);
     return HSLColor.fromAHSL(
       (color.alpha),
@@ -68,7 +68,7 @@ class ThemeProvider extends ChangeNotifier {
 
   set accentColor(Color value) {
     _accentColor = value;
-    _darkAccent = desaturateColor(_accentColor);
+    _darkAccent = _desaturateColor(_accentColor);
     preferences.accentColor = _accentColor;
     notifyListeners();
   }
