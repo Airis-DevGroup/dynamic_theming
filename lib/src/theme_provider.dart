@@ -5,6 +5,7 @@ import 'package:dynamic_theming/src/theme_preferences.dart';
 
 // Themes
 import 'package:dynamic_theming/src/themes.dart';
+import 'package:flutter/services.dart';
 
 class ThemeProvider extends ChangeNotifier {
   ThemePreferences preferences;
@@ -26,6 +27,15 @@ class ThemeProvider extends ChangeNotifier {
       (color.saturation - 0.1129032258),
       (color.lightness + 0.1235294118),
     ).toColor();
+  }
+
+  void setSystemBarsColor(Brightness platformBrightness) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      systemNavigationBarColor: platformBrightness == Brightness.light ?
+          appTheme.scaffoldBackgroundColor :
+          darkTheme.scaffoldBackgroundColor,
+      systemNavigationBarIconBrightness: platformBrightness,
+    ));
   }
 
   Color _accentColor = Colors.blueAccent;
