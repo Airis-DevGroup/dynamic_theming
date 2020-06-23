@@ -11,13 +11,12 @@ class ThemeProvider extends ChangeNotifier {
   ThemePreferences preferences;
 
   ThemeProvider() {
-    init();
+    initProvider();
   }
 
-  Future<ThemeProvider> init() async {
+  void initProvider() async {
     preferences = await ThemePreferences().init();
     await loadSavedData();
-    return this;
   }
 
   Color _desaturateColor(Color value) {
