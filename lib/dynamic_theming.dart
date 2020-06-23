@@ -1,7 +1,6 @@
 library dynamic_theming;
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import 'package:dynamic_theming/src/theme_provider.dart';
@@ -11,12 +10,14 @@ class DynamicThemedApp extends StatefulWidget {
 
   final String title;
   final Widget home;
-  final bool automaticNavBarColor;
+  final bool automaticSystemBars;
+  final Color statusBarColor;
 
   DynamicThemedApp({
     @required this.title,
     @required this.home,
-    this.automaticNavBarColor = false,
+    this.automaticSystemBars = false,
+    this.statusBarColor = Colors.transparent,
   }) : assert(title != null),
        assert(home != null);
 
@@ -31,9 +32,9 @@ class _DynamicThemedAppState extends State<DynamicThemedApp> with WidgetsBinding
     @override
   void didChangePlatformBrightness() {
     super.didChangePlatformBrightness();
-    if (theme != null && widget.automaticNavBarColor) {
+    if (theme != null && widget.automaticSystemBars) {
       Brightness _brightness = WidgetsBinding.instance.window.platformBrightness;
-      theme.setSystemBarsColor(_brightness);
+      theme.setSystemBarsColor(_brightness, widget.statusBarColor);
     }
   }
 
@@ -55,8 +56,10 @@ class _DynamicThemedAppState extends State<DynamicThemedApp> with WidgetsBinding
       create: (_) => ThemeProvider(),
       child: Consumer<ThemeProvider>(builder: (_, provider, __) {
         theme = provider;
-        if (widget.automaticNavBarColor)
-          provider.setSystemBarsColor(WidgetsBinding.instance.window.platformBrightness);
+        if (widget.automaticSystemBars) {
+          Brightness _platformBrightness = WidgetsBinding.instance.window.platformBrightness;
+          provider.setSystemBarsColor(_platformBrightness, widget.statusBarColor);
+        }
         return MaterialApp(
           title: this.widget.title,
           home: this.widget.home,

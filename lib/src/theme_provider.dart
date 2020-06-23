@@ -29,12 +29,17 @@ class ThemeProvider extends ChangeNotifier {
     ).toColor();
   }
 
-  void setSystemBarsColor(Brightness platformBrightness) {
+  void setSystemBarsColor(Brightness platformBrightness, Color statusBarColor) {
+    Brightness _statusBrightness = platformBrightness == Brightness.light ?
+          Brightness.dark : Brightness.light;
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: statusBarColor,
+      statusBarBrightness: _statusBrightness,
+      statusBarIconBrightness: _statusBrightness,
+      systemNavigationBarIconBrightness: platformBrightness,
       systemNavigationBarColor: platformBrightness == Brightness.light ?
           appTheme.scaffoldBackgroundColor :
           darkTheme.scaffoldBackgroundColor,
-      systemNavigationBarIconBrightness: platformBrightness,
     ));
   }
 
