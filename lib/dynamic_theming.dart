@@ -56,7 +56,7 @@ class _DynamicThemedAppState extends State<DynamicThemedApp> with WidgetsBinding
       create: (_) => ThemeProvider(),
       child: Consumer<ThemeProvider>(builder: (_, provider, __) {
         theme = provider;
-        if (widget.automaticSystemBars) {
+        if (widget.automaticSystemBars && provider.systemThemeEnabled) {
           Brightness _platformBrightness = WidgetsBinding.instance.window.platformBrightness;
           provider.setSystemBarsColor(_platformBrightness, widget.statusBarColor);
         }
@@ -64,7 +64,8 @@ class _DynamicThemedAppState extends State<DynamicThemedApp> with WidgetsBinding
           title: this.widget.title,
           home: this.widget.home,
           theme: provider.appTheme,
-          darkTheme: provider.darkTheme,
+          darkTheme: provider.systemThemeEnabled ? 
+            provider.darkTheme : provider.appTheme,
         );
       }),
     );
