@@ -75,6 +75,17 @@ class ThemeProvider extends ChangeNotifier {
       return AppTheme.dark(darkAccent);
   }
 
+  Brightness get currentBrightness {
+    if (systemThemeEnabled)
+      return WidgetsBinding.instance.window.platformBrightness;
+    else {
+      if (darkThemeEnabled)
+        return Brightness.dark;
+      else
+        return Brightness.light;
+    }
+  }
+
   set systemThemeAvailable(bool value){
     _systemThemeAvailable = value;
     if (value)
@@ -94,20 +105,21 @@ class ThemeProvider extends ChangeNotifier {
   set systemThemeEnabled(bool value) {
     _systemThemeEnabled = value;
     preferences.systemThemeEnabled = _systemThemeEnabled;
+    setSystemBarsColor(currentBrightness, _statusBarColor);
     notifyListeners();
   }
 
   set darkThemeEnabled(bool value) {
     _darkThemeEnabled = value;
     preferences.darkThemeEnabled = value;
-    setSystemBarsColor(value ? Brightness.dark : Brightness.light, _statusBarColor);
+    setSystemBarsColor(currentBrightness, _statusBarColor);
     notifyListeners();
   }
 
   set blackThemeEnabled(bool value) {
     _blackThemeEnabled = value;
     preferences.blackThemeEnabled = value;
-    setSystemBarsColor(Brightness.dark, _statusBarColor);
+    setSystemBarsColor(currentBrightness, _statusBarColor);
     notifyListeners();
   }
 

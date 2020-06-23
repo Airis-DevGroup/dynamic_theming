@@ -32,10 +32,8 @@ class _DynamicThemedAppState extends State<DynamicThemedApp> with WidgetsBinding
     @override
   void didChangePlatformBrightness() {
     super.didChangePlatformBrightness();
-    if (theme != null && widget.automaticSystemBars) {
-      Brightness _brightness = WidgetsBinding.instance.window.platformBrightness;
-      theme.setSystemBarsColor(_brightness, widget.statusBarColor);
-    }
+    if (theme != null && widget.automaticSystemBars && theme.systemThemeEnabled)
+      theme.setSystemBarsColor(theme.currentBrightness, widget.statusBarColor);
   }
 
   @override
@@ -56,10 +54,9 @@ class _DynamicThemedAppState extends State<DynamicThemedApp> with WidgetsBinding
       create: (_) => ThemeProvider(),
       child: Consumer<ThemeProvider>(builder: (_, provider, __) {
         theme = provider;
-        if (widget.automaticSystemBars && provider.systemThemeEnabled) {
-          Brightness _platformBrightness = WidgetsBinding.instance.window.platformBrightness;
-          provider.setSystemBarsColor(_platformBrightness, widget.statusBarColor);
-        }
+        if (widget.automaticSystemBars && provider.systemThemeEnabled)
+          provider.setSystemBarsColor(provider.currentBrightness, widget.statusBarColor);
+
         return MaterialApp(
           title: this.widget.title,
           home: this.widget.home,
