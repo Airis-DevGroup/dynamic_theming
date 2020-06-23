@@ -14,10 +14,11 @@ class DynamicThemedApp extends StatefulWidget {
   final bool automaticNavBarColor;
 
   DynamicThemedApp({
-    this.title,
-    this.home,
+    @required this.title,
+    @required this.home,
     this.automaticNavBarColor = false,
-  });
+  }) : assert(title != null),
+       assert(home != null);
 
   @override
   _DynamicThemedAppState createState() => _DynamicThemedAppState();
