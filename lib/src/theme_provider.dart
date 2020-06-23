@@ -32,6 +32,7 @@ class ThemeProvider extends ChangeNotifier {
   void setSystemBarsColor(Brightness platformBrightness, Color statusBarColor) {
     Brightness _statusBrightness = platformBrightness == Brightness.light ?
           Brightness.dark : Brightness.light;
+    _statusBarColor = statusBarColor;
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: statusBarColor,
       statusBarBrightness: _statusBrightness,
@@ -42,6 +43,8 @@ class ThemeProvider extends ChangeNotifier {
           darkTheme.scaffoldBackgroundColor,
     ));
   }
+
+  Color _statusBarColor;
 
   Color _accentColor = Colors.blueAccent;
   Color _darkAccent = Colors.lightBlueAccent;
@@ -97,12 +100,14 @@ class ThemeProvider extends ChangeNotifier {
   set darkThemeEnabled(bool value) {
     _darkThemeEnabled = value;
     preferences.darkThemeEnabled = value;
+    setSystemBarsColor(value ? Brightness.dark : Brightness.light, _statusBarColor);
     notifyListeners();
   }
 
   set blackThemeEnabled(bool value) {
     _blackThemeEnabled = value;
     preferences.blackThemeEnabled = value;
+    setSystemBarsColor(Brightness.dark, _statusBarColor);
     notifyListeners();
   }
 
