@@ -54,7 +54,7 @@ class _DynamicThemedAppState extends State<DynamicThemedApp> with WidgetsBinding
       create: (_) => ThemeProvider(),
       child: Consumer<ThemeProvider>(builder: (_, provider, __) {
         theme = provider;
-        if (widget.automaticSystemBars && provider.systemThemeEnabled)
+        if (widget.automaticSystemBars)
           provider.setSystemBarsColor(provider.currentBrightness, widget.statusBarColor);
 
         return MaterialApp(
