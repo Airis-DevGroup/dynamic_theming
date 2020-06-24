@@ -7,16 +7,18 @@ import 'package:dynamic_theming/src/theme_preferences.dart';
 import 'package:dynamic_theming/src/themes.dart';
 import 'package:flutter/services.dart';
 
-class ThemeProvider extends ChangeNotifier {
+class ThemeController extends ChangeNotifier {
   ThemePreferences preferences;
 
-  ThemeProvider() {
-    initProvider();
+  ThemeController({autoInit = false}) {
+    if (autoInit)
+      initProvider();
   }
 
-  void initProvider() async {
+  Future<ThemeController> initProvider() async {
     preferences = await ThemePreferences().init();
     await loadSavedData();
+    return this;
   }
 
   Color _desaturateColor(Color value) {
