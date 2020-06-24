@@ -26,16 +26,17 @@ class DynamicThemedApp extends StatefulWidget {
   _DynamicThemedAppState createState() => _DynamicThemedAppState();
 }
 
-class _DynamicThemedAppState extends State<DynamicThemedApp>
-    with WidgetsBindingObserver {
+class _DynamicThemedAppState extends State<DynamicThemedApp> with WidgetsBindingObserver {
+  ThemeController theme;
+  
   @override
   void didChangePlatformBrightness() {
     super.didChangePlatformBrightness();
-    if (widget.controller != null &&
+    if (theme != null &&
         widget.automaticSystemBars &&
-        widget.controller.systemThemeEnabled)
-      widget.controller.setSystemBarsColor(
-          widget.controller.currentBrightness, widget.statusBarColor);
+        theme.systemThemeEnabled)
+      theme.setSystemBarsColor(
+          theme.currentBrightness, widget.statusBarColor);
   }
 
   @override
@@ -53,13 +54,10 @@ class _DynamicThemedAppState extends State<DynamicThemedApp>
   @override
   Widget build(BuildContext context) {
     Consumer _child = Consumer<ThemeController>(builder: (_, provider, __) {
-      if (widget.automaticSystemBars &&
-          (provider.systemThemeEnabled ||
-              (widget.controller != null &&
-                  widget.controller.systemThemeEnabled))) {
+      theme = provider;
+      if (widget.automaticSystemBars)
         provider.setSystemBarsColor(
             provider.currentBrightness, widget.statusBarColor);
-      }
 
       return MaterialApp(
         title: this.widget.title,
